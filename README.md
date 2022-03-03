@@ -10,7 +10,7 @@ This goal of this library is to:
 
 Add this to your Cargo.toml:
 
-``` Rust
+``` Toml
 [dependencies]
 smarty_pants = "0.1.0"
 ```
