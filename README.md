@@ -17,7 +17,7 @@ Add this to your Cargo.toml:
 smarty_pants = "0.1.0"
 ```
 
-To create a new network simply call the new function with the wanted parameters and store it somewhere. Make sure it's mutable other wise many of the functions may not work.
+To create a new network simply call the new function with the wanted parameters and store it somewhere. Make sure it's mutable other wise many of the functions and methods may not work.
 
 ``` Rust
 use smarty_pants::neural_network::*;
