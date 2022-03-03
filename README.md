@@ -25,10 +25,10 @@ fn main() {
 }
 ```
 
-Then simply call the `run()` method to run it.
+Then simply call the `run()` method to run it with the arguments as the input/s.
 
 ``` Rust
-let output:Vec<f64> = network.run();
+let output:Vec<f64> = network.run(vec![1.0,2.0,3.0]);
 ```
 
 It will output a `Vector<f64>` containing the output of the network. For more information please see the [documentation](https://docs.rs/smart_pants/1.0.0) or a more detailed [example](https://github.com/Merlin1846/smarty_pants/tree/master/examples).
