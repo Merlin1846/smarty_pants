@@ -1,5 +1,7 @@
 # Smarty Pants
 
+![Crates.io](https://img.shields.io/crates/v/smarty_pants) ![docs.rs](https://img.shields.io/docsrs/smarty_pants) ![Crates.io](https://img.shields.io/crates/l/smarty_pants) ![Crates.io](https://img.shields.io/crates/d/smarty_pants)
+
 This goal of this library is to:
 
 - Produce `NeuralNetworks` that will always give the same result when given the same input.
