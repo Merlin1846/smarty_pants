@@ -5,7 +5,7 @@ edition = "2021"
 license-file = "LICENSE"
 readme = "README.md"
 repository = "https://github.com/Merlin1846/smarty_pants"
-keywords = ["machine-learning","ai","artificial-intelligence","neural-network"]
+keywords = ["machine-learning","ai","neural-network"]
 categories = ["science"]
 description = "A light wheight Neural Network library with a focus on ease of use and speed."
 
