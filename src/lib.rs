@@ -18,9 +18,9 @@ mod tests {
     /// Test if `NeuralNetwork::new_from()` is working.
     fn new_from() {
         let hidden_layers:Vec<Vec<f64>> = vec![vec![1.0,1.0,1.0]];
-        let output_wheights:Vec<f64> = vec![1.0,1.0];
+        let output_weights:Vec<f64> = vec![1.0,1.0];
         #[allow(unused_variables)]
-        let network:NeuralNetwork = NeuralNetwork::new_from(hidden_layers,output_wheights);
+        let network:NeuralNetwork = NeuralNetwork::new_from(hidden_layers,output_weights);
     }
 
     #[test]
@@ -32,7 +32,7 @@ mod tests {
 
     #[test]
     /// Test if the `set_wheight` and `get_wheight` functions are working
-    fn wheights() {
+    fn weights() {
         let mut network:NeuralNetwork = NeuralNetwork::new(1.0,10,10,3);
         assert!(network.set_wheight(42.4242424242, (5,8)) == None);
         assert!(network.get_wheight((5,8)).unwrap() == 42.4242424242);

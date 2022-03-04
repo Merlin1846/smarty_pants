@@ -58,7 +58,7 @@ fn main() {
             // and check if thats within `MARGIN` of `TARGET` using a range.
             if (TARGET-MARGIN..=TARGET+MARGIN).contains(&outputs[output][0]) {
                 // If true then print the value found by the network, the network itself, the current generation, and exit from the program.
-                println!("Finished in {:?}!\nGeneration: {:?}\nValue: {:?}\nNetwork: {{\nHiddenLayers: {:?}\nOutputLayer: {:?}\n}}", time.elapsed(),generation, outputs[output][0], networks[output].get_wheights(), networks[output].get_output_wheights());
+                println!("Finished in {:?}!\nGeneration: {:?}\nValue: {:?}\nNetwork: {{\nHiddenLayers: {:?}\nOutputLayer: {:?}\n}}", time.elapsed(),generation, outputs[output][0], networks[output].get_weights(), networks[output].get_output_weights());
                 // Exit code 0 on Linux means no problem, on Windows however this should be 256 but that is outside the scope of this example.
                 std::process::exit(0);
             } else {

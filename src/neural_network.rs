@@ -33,7 +33,7 @@ pub struct NeuralNetwork {
     /// A 2D Vector of all hidden `neuron`, every `neuron` is a `(f64,f64)` with the second value being its `wheight`
     hidden_layers: Vec<Vec<(f64,f64)>>,
     /// The `wheight` of the outputs.
-    output_wheights: Vec<f64>
+    output_weights: Vec<f64>
 }
 
 impl NeuralNetwork {
@@ -41,12 +41,12 @@ impl NeuralNetwork {
     pub fn new(default_wheight:f64 ,hidden_layers:usize ,hidden_neurons_per_layer:usize ,outputs:usize) -> NeuralNetwork {
         NeuralNetwork {
             hidden_layers: vec![vec![(0.0f64,default_wheight);hidden_neurons_per_layer];hidden_layers],
-            output_wheights: vec![default_wheight;outputs]
+            output_weights: vec![default_wheight;outputs]
         }
     }
 
-    /// Creates a new `NeuralNetwork` using the inputs as the `wheights`
-    pub fn new_from(hidden_layers:Vec<Vec<f64>>, output_wheights:Vec<f64>) -> NeuralNetwork {
+    /// Creates a new `NeuralNetwork` using the inputs as the `weights`
+    pub fn new_from(hidden_layers:Vec<Vec<f64>>, output_weights:Vec<f64>) -> NeuralNetwork {
         NeuralNetwork {
             hidden_layers: {
                 let mut layers:Vec<Vec<(f64,f64)>> = Vec::with_capacity(hidden_layers.len());
@@ -58,7 +58,7 @@ impl NeuralNetwork {
                 }
                 layers
             },
-            output_wheights:output_wheights
+            output_weights:output_weights
         }
     }
 
@@ -89,10 +89,10 @@ impl NeuralNetwork {
         }
 
         // Now that the values have reached the last layer transfer the values from the last layer to each output. Then return the outputs
-        let mut outputs:Vec<f64> = vec![0.0f64;self.output_wheights.len()];
+        let mut outputs:Vec<f64> = vec![0.0f64;self.output_weights.len()];
         for neuron in self.hidden_layers[self.hidden_layers.len()-1].iter() {
-            for output in 0..self.output_wheights.len() {
-                outputs[output] += neuron.0*self.output_wheights[output];
+            for output in 0..self.output_weights.len() {
+                outputs[output] += neuron.0*self.output_weights[output];
             }
         }
         outputs
@@ -154,7 +154,7 @@ impl NeuralNetwork {
 
     /// Mutates every `wheight` in the `NeuralNetwork` by a random amount that is a maximum of `max`
     /// in both the possitive and negative directions. It does this through addition and subtraction.
-    /// if `outputs` is true then it will also mutate the `output_wheights`
+    /// if `outputs` is true then it will also mutate the `output_weights`
     pub fn mutate(&mut self, mutation_rate:f64, outputs:bool) {
         let mut rng:ThreadRng = thread_rng();
         for layer in self.hidden_layers.iter_mut() {
@@ -164,7 +164,7 @@ impl NeuralNetwork {
         }
 
         if outputs {
-            for neuron in self.output_wheights.iter_mut() {
+            for neuron in self.output_weights.iter_mut() {
                 *neuron += rng.gen_range(-mutation_rate..=mutation_rate);
             }
         }
@@ -182,22 +182,22 @@ impl NeuralNetwork {
         networks
     }
 
-    /// Returns the `hidden_layers` `wheights` of the network.
-    pub fn get_wheights(&self) -> Vec<Vec<f64>> {
-        let mut wheights:Vec<Vec<f64>> = Vec::with_capacity(self.hidden_layers.len());
+    /// Returns the `hidden_layers` `weights` of the network.
+    pub fn get_weights(&self) -> Vec<Vec<f64>> {
+        let mut weights:Vec<Vec<f64>> = Vec::with_capacity(self.hidden_layers.len());
         for layer in self.hidden_layers.iter() {
-            let mut layer_wheights:Vec<f64> = Vec::with_capacity(layer.len());
+            let mut layer_weights:Vec<f64> = Vec::with_capacity(layer.len());
             for wheight in layer.iter() {
-                layer_wheights.push(wheight.1);
+                layer_weights.push(wheight.1);
             }
-            wheights.push(layer_wheights);
+            weights.push(layer_weights);
         }
-        wheights
+        weights
     }
 
-    /// Returns the `output_wheights` of the network.
-    pub fn get_output_wheights(&self) -> Vec<f64> {
-        self.output_wheights.clone()
+    /// Returns the `output_weights` of the network.
+    pub fn get_output_weights(&self) -> Vec<f64> {
+        self.output_weights.clone()
     }
 }
 
@@ -213,7 +213,7 @@ pub fn batch_run(networks:&mut Vec<NeuralNetwork>, inputs:&Vec<f64>) -> Vec<Vec<
 }
 
 /// Turns one inputted `NeuralNetwork` into `amount` number of mutated `NeuralNetwork`s mutated by mutation.
-/// If `outputs` is true then it will also mutate the output wheights. It does this through cloning and
+/// If `outputs` is true then it will also mutate the output weights. It does this through cloning and
 /// calling `NeuralNetwork::mutate(mutation)` so it isn't any more efficent, its simply here for convenience.
 pub fn batch_mutate(amount:usize, mutation_rate:f64, network:&NeuralNetwork, outputs:bool) -> Vec<NeuralNetwork> {
     let mut networks: Vec<NeuralNetwork> = Vec::with_capacity(amount);
