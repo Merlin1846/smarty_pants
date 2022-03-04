@@ -1,3 +1,6 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 1.0.0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+~ Complete rework of the `NeuralNetwork` temp value storage system.
+
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.2.2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ~ Fixed spelling erros with weight being wheight. Also not sure where v0.2.1 went...
 

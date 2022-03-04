@@ -67,8 +67,8 @@ impl NeuralNetwork {
 
         // For each input pass the value to the first `hidden_layer` and multiply by the `neurons` wheight
         for neuron in 0..inputs.len() {
-            for hln in temp[0].iter_mut() {
-                *hln += inputs[neuron]*(*hln);
+            for temp_neuron in 0..self.hidden_layers.len() {
+                temp[0][temp_neuron] += inputs[neuron]*(self.hidden_layers[0][temp_neuron]);
             }
         }
 
@@ -77,7 +77,7 @@ impl NeuralNetwork {
             for neuron in 0..temp[layer].len() {
                 for next_neuron in 0..temp[layer+1].len() {
                     // Set `next_neuron` to the `current neuron`, passing the value forwards through the layers
-                    temp[layer+1][next_neuron] += temp[layer][neuron]*temp[layer+1][next_neuron];
+                    temp[layer+1][next_neuron] += temp[layer][neuron]*self.hidden_layers[layer+1][next_neuron];
                 }
             }
         }
