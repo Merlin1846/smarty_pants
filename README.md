@@ -14,7 +14,7 @@ Add this to your Cargo.toml:
 
 ``` Toml
 [dependencies]
-smarty_pants = "0.1.0"
+smarty_pants = "0.2.0"
 ```
 
 To create a new network simply call the new function with the wanted parameters and store it somewhere. Make sure it's mutable other wise many of the functions and methods may not work.

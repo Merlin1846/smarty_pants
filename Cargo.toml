@@ -1,6 +1,6 @@
 [package]
 name = "smarty_pants"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2021"
 license = "MIT"
 #license-file = "LICENSE"
@@ -14,3 +14,5 @@ description = "A light wheight Neural Network library with a focus on ease of us
 
 [dependencies]
 rand = "0.8.5"
+bincode = "1.3.3"
+serde = {version = "1.0.136", features = ["derive"]}

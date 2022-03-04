@@ -6,6 +6,7 @@ convenience functions such as `batch_run()` and `batch_mutate()`
 
 use std::fmt::Error;
 use rand::prelude::*;
+use serde::{Serialize, Deserialize};
 
 /**
 The `NeuralNetwork` type from which all learning functions come from, stores data for the
@@ -25,7 +26,9 @@ let output:Vec<f64> = brain.run(&vec![1.0,2.0,3.0,4.0,5.0]);
 
 Please note: This Type is almost useless if the variable it is stored in is not `mutable`.
 */
-#[derive(Clone)]
+//#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
+//#[derive(Clone)]
 pub struct NeuralNetwork {
     /// A 2D Vector of all hidden `neuron`, every `neuron` is a `(f64,f64)` with the second value being its `wheight`
     hidden_layers: Vec<Vec<(f64,f64)>>,
@@ -61,6 +64,13 @@ impl NeuralNetwork {
 
     /// Runs the NeuralNetwork using the provided arguments, then returns the output
     pub fn run(&mut self, inputs:&Vec<f64>) -> Vec<f64> {
+        // Reset all neuron values to 0 so that the next run call outputs the correct values.
+        for layer in self.hidden_layers.iter_mut() {
+            for neuron in layer.iter_mut() {
+                neuron.0 = 0.0;
+            }
+        }
+
         // For each input pass the value to the first `hidden_layer` and multiply by the `neurons` wheight
         for neuron in 0..inputs.len() {
             for hln in self.hidden_layers[0].iter_mut() {
