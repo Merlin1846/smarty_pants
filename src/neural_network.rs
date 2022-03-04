@@ -23,15 +23,13 @@ assert!(brain.get_wheight((5,7)).unwrap() == 10.0);
 
 let output:Vec<f64> = brain.run(&vec![1.0,2.0,3.0,4.0,5.0]);
 ```
-
-Please note: This Type is almost useless if the variable it is stored in is not `mutable`.
 */
 //#[derive(Serialize, Deserialize, Debug, Clone)]
 #[derive(Serialize, Deserialize, PartialEq, Debug, Clone)]
 //#[derive(Clone)]
 pub struct NeuralNetwork {
-    /// A 2D Vector of all hidden `neuron`, every `neuron` is a `(f64,f64)` with the second value being its `wheight`
-    hidden_layers: Vec<Vec<(f64,f64)>>,
+    /// A 2D Vector of all hidden `neuron`, every `neuron` is a `f64` that is its `wheight`
+    hidden_layers: Vec<Vec<f64>>,
     /// The `wheight` of the outputs.
     output_weights: Vec<f64>
 }
@@ -40,7 +38,7 @@ impl NeuralNetwork {
     /// Creates a new `NeuralNetwork` using the specified arguments.
     pub fn new(default_wheight:f64 ,hidden_layers:usize ,hidden_neurons_per_layer:usize ,outputs:usize) -> NeuralNetwork {
         NeuralNetwork {
-            hidden_layers: vec![vec![(0.0f64,default_wheight);hidden_neurons_per_layer];hidden_layers],
+            hidden_layers: vec![vec![default_wheight;hidden_neurons_per_layer];hidden_layers],
             output_weights: vec![default_wheight;outputs]
         }
     }
@@ -49,11 +47,11 @@ impl NeuralNetwork {
     pub fn new_from(hidden_layers:Vec<Vec<f64>>, output_weights:Vec<f64>) -> NeuralNetwork {
         NeuralNetwork {
             hidden_layers: {
-                let mut layers:Vec<Vec<(f64,f64)>> = Vec::with_capacity(hidden_layers.len());
+                let mut layers:Vec<Vec<f64>> = Vec::with_capacity(hidden_layers.len());
                 for layer in hidden_layers.iter() {
                     layers.push(Vec::with_capacity(layer.len()));
                     for neuron in 0..layer.len() {
-                        layers.last_mut().unwrap().push((0.0,layer[neuron]));
+                        layers.last_mut().unwrap().push(layer[neuron]);
                     }
                 }
                 layers
@@ -64,35 +62,31 @@ impl NeuralNetwork {
 
     /// Runs the NeuralNetwork using the provided arguments, then returns the output
     pub fn run(&mut self, inputs:&Vec<f64>) -> Vec<f64> {
-        // Reset all neuron values to 0 so that the next run call outputs the correct values.
-        for layer in self.hidden_layers.iter_mut() {
-            for neuron in layer.iter_mut() {
-                neuron.0 = 0.0;
-            }
-        }
+        // Create a place to store the temporary values.
+        let mut temp:Vec<Vec<f64>> = vec![vec![0.0;self.hidden_layers[0].len()];self.hidden_layers.len()];
 
         // For each input pass the value to the first `hidden_layer` and multiply by the `neurons` wheight
         for neuron in 0..inputs.len() {
-            for hln in self.hidden_layers[0].iter_mut() {
-                hln.0 += inputs[neuron]*hln.1;
+            for hln in temp[0].iter_mut() {
+                *hln += inputs[neuron]*(*hln);
             }
         }
 
         // For each `neuron` in each `hidden_layer` push the values forwards towards the last layer
-        for layer in 0..(self.hidden_layers.len()-1) {
-            for neuron in 0..self.hidden_layers[layer].len() {
-                for next_neuron in 0..self.hidden_layers[layer+1].len() {
+        for layer in 0..(temp.len()-1) {
+            for neuron in 0..temp[layer].len() {
+                for next_neuron in 0..temp[layer+1].len() {
                     // Set `next_neuron` to the `current neuron`, passing the value forwards through the layers
-                    self.hidden_layers[layer+1][next_neuron].0 += self.hidden_layers[layer][neuron].0*self.hidden_layers[layer+1][next_neuron].1;
+                    temp[layer+1][next_neuron] += temp[layer][neuron]*temp[layer+1][next_neuron];
                 }
             }
         }
 
         // Now that the values have reached the last layer transfer the values from the last layer to each output. Then return the outputs
         let mut outputs:Vec<f64> = vec![0.0f64;self.output_weights.len()];
-        for neuron in self.hidden_layers[self.hidden_layers.len()-1].iter() {
+        for neuron in temp[temp.len()-1].iter() {
             for output in 0..self.output_weights.len() {
-                outputs[output] += neuron.0*self.output_weights[output];
+                outputs[output] += neuron*self.output_weights[output];
             }
         }
         outputs
@@ -116,7 +110,7 @@ impl NeuralNetwork {
     pub fn set_wheight(&mut self, wheight:f64 ,neuron:(usize,usize)) -> Option<String> {
         if neuron.0 < self.hidden_layers.len() {
             if neuron.1 < self.hidden_layers.len() {
-                self.hidden_layers[neuron.0][neuron.1].1 = wheight;
+                self.hidden_layers[neuron.0][neuron.1] = wheight;
                 None
             } else {
                 Some("Error setting wheight of a neuron, the neuron is out of bounds on the y axis.".to_owned())
@@ -143,7 +137,7 @@ impl NeuralNetwork {
     pub fn get_wheight(&self, neuron:(usize,usize)) -> Result<f64, Error> {
         if neuron.0 < self.hidden_layers.len() {
             if neuron.1 < self.hidden_layers[neuron.0].len() {
-                Ok(self.hidden_layers[neuron.0][neuron.1].1)
+                Ok(self.hidden_layers[neuron.0][neuron.1])
             } else {
                 Err(Error)
             }
@@ -159,7 +153,7 @@ impl NeuralNetwork {
         let mut rng:ThreadRng = thread_rng();
         for layer in self.hidden_layers.iter_mut() {
             for neuron in layer.iter_mut() {
-                neuron.1 += rng.gen_range(-mutation_rate..=mutation_rate);
+                *neuron += rng.gen_range(-mutation_rate..=mutation_rate);
             }
         }
 
@@ -188,7 +182,7 @@ impl NeuralNetwork {
         for layer in self.hidden_layers.iter() {
             let mut layer_weights:Vec<f64> = Vec::with_capacity(layer.len());
             for wheight in layer.iter() {
-                layer_weights.push(wheight.1);
+                layer_weights.push(*wheight);
             }
             weights.push(layer_weights);
         }
