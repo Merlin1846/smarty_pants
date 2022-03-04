@@ -9,7 +9,7 @@
 
 + Added a new example that shows off serde and bincode.
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 ~ More tiny fixes, theirs going to be alot of these early on.
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
