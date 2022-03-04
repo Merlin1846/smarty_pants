@@ -5,6 +5,7 @@ edition = "2021"
 license = "MIT"
 #license-file = "LICENSE"
 readme = "README.md"
+documentation = "https://docs.rs/smarty_pants/latest/smarty_pants/"
 repository = "https://github.com/Merlin1846/smarty_pants"
 keywords = ["machine-learning","ai","neural-network"]
 categories = ["science"]
