@@ -1,16 +1,19 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.2.2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+~ Fixed spelling erros with weight being wheight. Also not sure where v0.2.1 went...
+
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.2.0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-~   Fixed a Major bug where any NeuralNetwork that had its run() method called
-    more than once would give inaccurate results after the first call.
+~ Fixed a Major bug where any NeuralNetwork that had its run() method called
+  more than once would give inaccurate results after the first call.
 
-+   Added bincode and serde as dependencies and implemented the neccesary traits to make them work.
++ Added bincode and serde as dependencies and implemented the neccesary traits to make them work.
 
-+   Added a new example that shows off serde and bincode.
++ Added a new example that shows off serde and bincode.
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.2-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-More tiny fixes, theirs going to be alot of these early on.
+~ More tiny fixes, theirs going to be alot of these early on.
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.1-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-A billion tiny little fixes to things like README.md and Cargo.toml
+~ A billion tiny little fixes to things like README.md and Cargo.toml
 
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Version 0.1.0-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-Inital version.
++ Inital version.
