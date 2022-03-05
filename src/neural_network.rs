@@ -50,25 +50,26 @@ impl NeuralNetwork {
                 let mut layers:Vec<Vec<f64>> = Vec::with_capacity(hidden_layers.len());
                 for layer in hidden_layers.iter() {
                     layers.push(Vec::with_capacity(layer.len()));
-                    for neuron in 0..layer.len() {
-                        layers.last_mut().unwrap().push(layer[neuron]);
+                    for neuron in layer.iter() {
+                        layers.last_mut().unwrap().push(*neuron);
                     }
                 }
                 layers
             },
-            output_weights:output_weights
+            output_weights
         }
     }
 
+    #[inline]
     /// Runs the NeuralNetwork using the provided arguments, then returns the output
-    pub fn run(&mut self, inputs:&Vec<f64>) -> Vec<f64> {
+    pub fn run(&mut self, inputs:&[f64]) -> Vec<f64> {
         // Create a place to store the temporary values.
         let mut temp:Vec<Vec<f64>> = vec![vec![0.0;self.hidden_layers[0].len()];self.hidden_layers.len()];
 
         // For each input pass the value to the first `hidden_layer` and multiply by the `neurons` wheight
-        for neuron in 0..inputs.len() {
+        for neuron in inputs.iter() {
             for temp_neuron in 0..self.hidden_layers.len() {
-                temp[0][temp_neuron] += inputs[neuron]*(self.hidden_layers[0][temp_neuron]);
+                temp[0][temp_neuron] += neuron*(self.hidden_layers[0][temp_neuron]);
             }
         }
 
@@ -85,6 +86,8 @@ impl NeuralNetwork {
         // Now that the values have reached the last layer transfer the values from the last layer to each output. Then return the outputs
         let mut outputs:Vec<f64> = vec![0.0f64;self.output_weights.len()];
         for neuron in temp[temp.len()-1].iter() {
+            // This is allowed becuase I couldn't find a way to implement clippy's suggestion without doing something ridiculous.
+            #[allow(clippy::needless_range_loop)]
             for output in 0..self.output_weights.len() {
                 outputs[output] += neuron*self.output_weights[output];
             }
@@ -198,10 +201,10 @@ impl NeuralNetwork {
 /// Returns a `Vector` of `Vector`s that makes up the output of all `NeuralNetworks` given to this function.
 /// This function does this by repeatedly calling `NeuralNetwork::run()` so it isn't any more efficent, its simply
 /// here for convenience.
-pub fn batch_run(networks:&mut Vec<NeuralNetwork>, inputs:&Vec<f64>) -> Vec<Vec<f64>> {
+pub fn batch_run(networks:&mut [NeuralNetwork], inputs:&[f64]) -> Vec<Vec<f64>> {
     let mut output: Vec<Vec<f64>> = Vec::with_capacity(networks.len());
     for network in networks.iter_mut() {
-        output.push(network.run(&inputs));
+        output.push(network.run(inputs));
     }
     output
 }

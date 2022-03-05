@@ -1,6 +1,6 @@
 [package]
 name = "smarty_pants"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 license = "MIT"
 #license-file = "LICENSE"
@@ -12,6 +12,10 @@ categories = ["science"]
 description = "A light wheight Neural Network library with a focus on ease of use and speed."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[profile.release]
+lto = true
+codegen-units = 1
 
 [dependencies]
 rand = "0.8.5"
